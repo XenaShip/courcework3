@@ -2,15 +2,19 @@ import json
 import requests
 from datetime import datetime
 
-def unpacking(url):
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json(), "INFO: данные получены успешно"
-    return None, f"WARNING: ошибка {response.status_code}"
+
+def unpacking(filename):
+    try:
+        with open(filename, encoding='utf-8') as file:
+            data = json.load(file)
+            info = 'Файл успешно открыт'
+    except FileNotFoundError:
+        data = None
+        info = f"Ошибка. Файл {filename} не найден"
+    return data, info
 
 
 def get_filter(data, filtered_empy_from=False):
-#    data = [x for x in data if ['state'] in x and x["state"] == "EXECUTED"]
     data = [x for x in data if 'state' in x and x["state"] == "EXECUTED"]
     if filtered_empy_from:
         data = [x for x in data if 'from' in x]

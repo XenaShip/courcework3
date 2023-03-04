@@ -1,6 +1,6 @@
 import pytest
+import requests
 from utils.func import unpacking, get_last, get_filter, get_formatted_data
-
 
 #@pytest.fixture
 test_data = [
@@ -96,13 +96,13 @@ test_data = [
 
 
 def test_unpacking():
-    url = "https://file.notion.so/f/s/d22c7143-d55e-4f1d-aa98-e9b15e5e5efc/operations.json?spaceId=0771f0bb-b4cb-4a14-bc05-94cbd33fc70d&table=block&id=f11058ed-10ad-42ea-a13d-aad1945e5421&expirationTimestamp=1677769174003&signature=dSPXH_zkbz8InyyiumNfoTD1aPpC0kwflF-dJh9CWa4&downloadName=operations.json"
-    assert unpacking(url) is not None
-    url = "https://file.notion.so/f/s/d22c7143-d55e-4f1d-aa98-e9b15e5e5efc/operations.json?spaceId=0771f0bb-b4cb-4a14-bc05-94cbd33fc70d&table=block&id=f11058ed-10ad-42ea-a13d-aad1945e5421&expirationTimestamp=1677769174003&signature=dSPXH_zkbz8InyyiumNfoTD1aPpC0kwflF-dJh9CWa4&downloadNam=operations.json"
-    data, info = unpacking(url)
+    filename = 'utils/operations.json'
+    data, info = unpacking(filename)
+    assert data is not None
+    filename = 'ooo.py'
+    data, info = unpacking(filename)
     assert data is None
-    info_warning = info.split()
-    assert info_warning[0] == "WARNING:"
+    assert info.split()[0] == "Ошибка."
 
 
 def test_get_filter():
